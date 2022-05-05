@@ -5,8 +5,6 @@ from adafruit_hid.keyboard import Keyboard
 from adafruit_hid.keycode import Keycode
 import time
 
-wiring = {0: "p1", 2: "p2", 4: "fire",
-          6: "left", 9: "down", 11: "up", 13: "right"}
 
 names = ["p1", "p2",  "fire",
          "left",  "down", "up", "right", "0", "1", "2", "3", "4", "5", "6"]
@@ -28,12 +26,12 @@ keymap = [
     Keycode.ONE,
     Keycode.TWO,
     Keycode.CONTROL,
-      Keycode.LEFT_ARROW,
-      Keycode.DOWN_ARROW,
-      Keycode.UP_ARROW,
-      Keycode.RIGHT_ARROW,
-      Keycode.X,
-      Keycode.Z,
+    Keycode.LEFT_ARROW,
+    Keycode.DOWN_ARROW,
+    Keycode.UP_ARROW,
+    Keycode.RIGHT_ARROW,
+    Keycode.X,
+    Keycode.Z,
 ]
 
 inputs = [digitalio.DigitalInOut(board.GP0),
@@ -41,8 +39,8 @@ inputs = [digitalio.DigitalInOut(board.GP0),
           digitalio.DigitalInOut(board.GP4),
           digitalio.DigitalInOut(board.GP6),
           digitalio.DigitalInOut(board.GP9),
-          digitalio.DigitalInOut(board.GP11),
           digitalio.DigitalInOut(board.GP13),
+          digitalio.DigitalInOut(board.GP11),
 
           # ANGLE ENCODER VALUES
           digitalio.DigitalInOut(board.GP22),
@@ -61,7 +59,7 @@ last_val = 0
 while True:
     # s = ""
     val = 0
-    for i in range(len(inputs)-1 ,6,-1):
+    for i in range(len(inputs)-1, 6, -1):
         val = val << 1
         if (not inputs[i].value):
             # s = s + "1"
@@ -72,8 +70,8 @@ while True:
     # print(s)
     # s = int(s)
     change = val - last_val
-    print(change)
-    if (abs(change) > 120):
+    # print(change)
+    if (abs(change) > 100):
         last_val = val
         # kbd.release_all()
         kbd.release(Keycode.Z)
@@ -83,7 +81,7 @@ while True:
     elif (change > 2):
         kbd.press(Keycode.X)
         kbd.release(Keycode.Z)
-    elif( change < -2):
+    elif(change < -2):
         kbd.press(Keycode.Z)
         kbd.release(Keycode.X)
     else:
